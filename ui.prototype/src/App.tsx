@@ -60,11 +60,6 @@ function App() {
                         </div>
                     )
                 }}
-                renderItemsContainer={({item}) => {
-                    return <div className={`hover:bg-transparent`}>
-                        
-                    </div>
-                }}
             />
         </UncontrolledTreeEnvironment>
     );
