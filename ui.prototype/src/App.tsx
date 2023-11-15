@@ -1,35 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {StaticTreeDataProvider, Tree, TreeItem, UncontrolledTreeEnvironment} from "react-complex-tree";
+import 'react-complex-tree/lib/style-modern.css';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFile, faFolder} from "@fortawesome/free-solid-svg-icons";
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const items = {
+        root: {
+            index: 'root',
+            isFolder: true,
+            children: ['child1', 'child2'],
+            data: 'Root item',
+        },
+        child1: {
+            index: 'child1',
+            children: [],
+            data: 'Child item 1',
+        },
+        child2: {
+            index: 'child2',
+            isFolder: true,
+            children: ['child3'],
+            data: 'Child item 2',
+        },
+        child3: {
+            index: 'child3',
+            children: [],
+            data: 'Child item 3',
+        },
+    };
+
+
+
+    return (
+        <UncontrolledTreeEnvironment
+            canDragAndDrop={true}
+            canDropOnFolder={true}
+            canReorderItems={true}
+            getItemTitle={item => item.data}
+            
+            viewState={{}}
+            canRename={true}
+            dataProvider={new StaticTreeDataProvider(items, (item, data) => ({...item, data}))}
+        >
+            <Tree
+                treeId="tree-2"
+                rootItem="root"
+                treeLabel="Tree Example"
+                renderItemArrow={({item}) => {
+                    return (
+                        <div className={`hover:bg-transparent`}>
+                            {
+                                item.isFolder ? <FontAwesomeIcon icon={faFolder}/>
+                                    :
+                                    <FontAwesomeIcon icon={faFile}/>
+                            }
+                        </div>
+                    )
+                }}
+                renderItemsContainer={({item}) => {
+                    return <div className={`hover:bg-transparent`}>
+                        
+                    </div>
+                }}
+            />
+        </UncontrolledTreeEnvironment>
+    );
 }
 
 export default App
